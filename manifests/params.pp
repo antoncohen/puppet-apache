@@ -18,8 +18,6 @@
 #
 class apache::params {
 
-  $user          = 'www-data'
-  $group         = 'www-data'
   $ssl           = 'true'
   $template      = 'apache/vhost-default.conf.erb'
   $priority      = '25'
@@ -33,6 +31,8 @@ class apache::params {
   case $operatingsystem {
     'centos', 'redhat', 'fedora', 'scientific': {
        $apache_name = 'httpd'
+       $user = 'apache'
+       $group = 'apache'
        $php_package = 'php'
        $mod_python_package = 'mod_python'
        $mod_wsgi_package = 'mod_wsgi'
@@ -42,6 +42,8 @@ class apache::params {
     }
     'ubuntu', 'debian': {
        $apache_name = 'apache2'
+       $user = 'www-data'
+       $group = 'www-data'
        $php_package = 'libapache2-mod-php5'
        $mod_python_package = 'libapache2-mod-python'
        $mod_wsgi_package = 'libapache2-mod-wsgi'
@@ -51,6 +53,8 @@ class apache::params {
     }
     default: {
        $apache_name = 'apache2'
+       $user = 'www-data'
+       $group = 'www-data'
        $php_package = 'libapache2-mod-php5'
        $mod_python_package = 'libapache2-mod-python'
        $mod_wsgi_package = 'libapache2-mod-wsgi'
