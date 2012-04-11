@@ -20,6 +20,7 @@ class apache {
   }
   service { 'httpd':
     name      => $apache::params::apache_name,
+    alias     => 'apache',
     ensure    => running,
     enable    => true,
     subscribe => Package['httpd'],
