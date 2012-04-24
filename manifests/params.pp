@@ -38,7 +38,9 @@ class apache::params {
        $mod_wsgi_package = 'mod_wsgi'
        $ssl_package = 'mod_ssl'
        $apache_dev  = 'httpd-devel'
-       $vdir = '/etc/httpd/conf.d/'
+       $vdir = '/etc/httpd/conf.d'
+       $confd = '/etc/httpd/conf.d'
+       $docroot = '/var/www/html'
     }
     'ubuntu', 'debian': {
        $apache_name = 'apache2'
@@ -49,7 +51,9 @@ class apache::params {
        $mod_wsgi_package = 'libapache2-mod-wsgi'
        $ssl_package = 'apache-ssl'
        $apache_dev  = [ 'libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev' ]
-       $vdir = '/etc/apache2/sites-enabled/'
+       $vdir = '/etc/apache2/sites-enabled'
+       $confd = '/etc/apache2/conf.d'
+       $docroot = '/var/www'
     }
     default: {
        $apache_name = 'apache2'
@@ -60,7 +64,9 @@ class apache::params {
        $mod_wsgi_package = 'libapache2-mod-wsgi'
        $ssl_package = 'apache-ssl'
        $apache_dev  = 'apache-dev'
-       $vdir = '/etc/apache2/sites-enabled/'
+       $vdir = '/etc/apache2/sites-enabled'
+       $confd = '/etc/apache2/conf.d'
+       $docroot = '/var/www'
     }
   }
 }

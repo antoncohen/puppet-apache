@@ -28,11 +28,12 @@
 #  }
 #
 define apache::vhost(
-    $port,
-    $docroot,
+    $port               = '80',
     $configure_firewall = true,
+    $docroot            = $apache::params::docroot,
     $ssl                = $apache::params::ssl,
     $template           = $apache::params::template,
+    $source             = unset,
     $priority           = $apache::params::priority,
     $servername         = $apache::params::servername,
     $serveraliases      = $apache::params::serveraliases,
@@ -65,7 +66,19 @@ define apache::vhost(
     }
   }
 
-  file { "${priority}-${name}.conf":
+  if $source != unset {
+    file { "${priority}-${name}.conf":
+      name    => "${apache::params::vdir}/${priority}-${name}.conf",
+      source  => $source,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '755',
+      require => Package['httpd'],
+      notify  => Service['httpd'],
+    }
+  }
+  else {
+    file { "${priority}-${name}.conf":
       name    => "${apache::params::vdir}/${priority}-${name}.conf",
       content => template($template),
       owner   => 'root',
@@ -73,6 +86,7 @@ define apache::vhost(
       mode    => '755',
       require => Package['httpd'],
       notify  => Service['httpd'],
+    }
   }
 
   if $configure_firewall {
