@@ -16,16 +16,25 @@ class apache::ssl {
 
   include apache
 
-  case $operatingsystem {
-     'centos', 'fedora', 'redhat', 'scientific': {
-        package { "apache_ssl_package":
-           name    => "$apache::params::ssl_package",
-           ensure  => installed,
-           require => Package['httpd'],
-        }
-     }
-     'ubuntu', 'debian': {
-        a2mod { "ssl": ensure => present, }
-     }
+  package { 'apache_ssl_package':
+    name    => "$apache::params::ssl_package",
+    ensure  => installed,
+    require => Package['httpd'],
+  }
+
+  case $::osfamily {
+    RedHat: {
+      file { 'apache_ssl':
+        path => "${apache::params::mod_conf_dir}/ssl.conf",
+        ensure => present,
+        source => "puppet:///modules/apache/mod/${::osfamily}/ssl.conf",
+        mode => 0644,
+        owner => root,
+        group => root,
+      }
+    }
+    Debian: {
+      a2mod { 'ssl': ensure => present, }
+    }
   }
 }
